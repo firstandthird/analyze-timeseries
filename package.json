@@ -22,7 +22,8 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "grunt": "^0.4.5",
-    "grunt-set": "0.0.2"
+    "grunt-set": "0.0.2",
+    "grunt-set-node": "0.0.1"
   },
   "dependencies": {
     "lodash": "^3.7.0",
