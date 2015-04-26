@@ -2,7 +2,6 @@ var formatTimeseries = require('./lib/timeseries');
 var getMetrics = require('./lib/metrics');
 
 module.exports = function(data, options) {
-
   var timeseries = formatTimeseries(data, options);
 
   //metrics

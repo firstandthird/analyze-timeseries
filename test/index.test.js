@@ -227,8 +227,7 @@ describe('analyzeTimeseries', function() {
     });
 
     describe('week', function() {
-      it.skip('should have thisWeek', function() {
-
+      it('should have thisWeek', function() {
         var data = [
           { date: new Date(), value: 2 },
           { date: moment().subtract(1, 'day').toDate(), value: 2 },
