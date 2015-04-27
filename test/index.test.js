@@ -227,22 +227,43 @@ describe('analyzeTimeseries', function() {
     });
 
     describe('week', function() {
-      it.skip('should have thisWeek', function() {
-        var data = [
+      var data, out;
+
+      before(function() {
+        data = [
           { date: new Date(), value: 2 },
-          { date: moment().subtract(1, 'day').toDate(), value: 2 },
-          { date: moment().subtract(3, 'day').toDate(), value: 2 },
-          { date: moment().subtract(5, 'day').toDate(), value: 2 },
-          { date: moment().subtract(8, 'day').toDate(), value: 5 }
+          { date: moment().subtract(1, 'week').toDate(), value: 4 },
+          { date: moment().subtract(2, 'week').toDate(), value: 6 },
+          { date: moment().subtract(3, 'week').toDate(), value: 24 },
+          { date: moment().subtract(4, 'week').toDate(), value: 12 }
         ];
 
-        var out = aT({ values: data });
+        out = aT({ values: data });
+      });
 
+      it('should have thisWeek', function() {
         var metric = out.metrics.weekly.thisWeek;
         expect(metric.description).to.equal('This Week');
-        expect(metric.value).to.equal(10);
-        expect(metric.change).to.equal(100);
-
+        expect(metric.value).to.equal(2);
+        expect(metric.change).to.equal(1);
+      });
+      it('should have 1 week ago', function() {
+        var metric = out.metrics.weekly.weekAgo1;
+        expect(metric.description).to.equal('1 week ago');
+        expect(metric.value).to.equal(4);
+        expect(metric.change).to.equal(0.5);
+      });
+      it('should have 2 weeks ago', function() {
+        var metric = out.metrics.weekly.weekAgo2;
+        expect(metric.description).to.equal('2 weeks ago');
+        expect(metric.value).to.equal(6);
+        expect(metric.change).to.equal(3);
+      });
+      it('should have 3 weeks ago', function() {
+        var metric = out.metrics.weekly.weekAgo3;
+        expect(metric.description).to.equal('3 weeks ago');
+        expect(metric.value).to.equal(24);
+        expect(metric.change).to.equal(-0.5);
       });
     });
 
@@ -329,7 +350,7 @@ describe('analyzeTimeseries', function() {
         var out = aT({ values: data });
 
         var metric = out.metrics.overall.minimum;
-        console.log(metric);
+
         expect(metric.description).to.equal('Min');
         expect(metric.value).to.equal(3);
         expect(metric.change).to.equal(null);
