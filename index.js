@@ -20,10 +20,10 @@ module.exports = function(data, options) {
       weekAgo3: getMetrics.weekAgo(timeseries, 3)
     },
     overall: {
-      total: 0,
-      average: 0,
-      maximum: 0,
-      minimum: 0
+      total: getMetrics.total(timeseries),
+      average: getMetrics.average(timeseries),
+      maximum: getMetrics.max(timeseries),
+      minimum: getMetrics.min(timeseries)
     }
   };
 
