@@ -2,6 +2,7 @@ var formatTimeseries = require('./lib/timeseries');
 var getMetrics = require('./lib/metrics');
 
 module.exports = function(data, options) {
+  options = options || {};
   var timeseries = formatTimeseries(data, options);
 
   //metrics
@@ -20,12 +21,15 @@ module.exports = function(data, options) {
       weekAgo3: getMetrics.weekAgo(timeseries, 3)
     },
     overall: {
-      total: getMetrics.total(timeseries),
-      average: getMetrics.average(timeseries),
       maximum: getMetrics.max(timeseries),
       minimum: getMetrics.min(timeseries)
     }
   };
+
+  if (options.aggregates !== false) {
+    metrics.overall.total = getMetrics.total(timeseries);
+    metrics.overall.average = getMetrics.average(timeseries);
+  }
 
   return {
     timeseries: timeseries,

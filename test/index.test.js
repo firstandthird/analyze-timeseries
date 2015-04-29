@@ -356,7 +356,18 @@ describe('analyzeTimeseries', function() {
         expect(metric.change).to.equal(null);
       });
     });
+    describe('aggregates', function() {
+      it('should not calculate average nor total if aggregates option is false', function() {
+        var data = [
+          { date: new Date(), value: 90 },
+          { date: moment().subtract(1, 'day').toDate(), value: 80 }
+        ];
 
+        var out = aT({ values: data }, { aggregates: false });
+        expect(out.metrics.overall.total).to.be.an('undefined');
+        expect(out.metrics.overall.average).to.be.an('undefined');
+      });
+    });
   });
 
 });
