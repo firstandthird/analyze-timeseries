@@ -14,12 +14,7 @@ module.exports = function(data, options) {
       daysAgo14: getMetrics.daysAgo(timeseries, 14),
       daysAgo21: getMetrics.daysAgo(timeseries, 21)
     },
-    weekly: {
-      thisWeek: getMetrics.weekAgo(timeseries, 0),
-      weekAgo1: getMetrics.weekAgo(timeseries, 1),
-      weekAgo2: getMetrics.weekAgo(timeseries, 2),
-      weekAgo3: getMetrics.weekAgo(timeseries, 3)
-    },
+    weekly: null,
     overall: {
       maximum: getMetrics.max(timeseries),
       minimum: getMetrics.min(timeseries)
@@ -29,6 +24,12 @@ module.exports = function(data, options) {
   if (options.aggregates !== false) {
     metrics.overall.total = getMetrics.total(timeseries);
     metrics.overall.average = getMetrics.average(timeseries);
+    metrics.weekly = {
+      thisWeek: getMetrics.weekAgo(timeseries, 0),
+      weekAgo1: getMetrics.weekAgo(timeseries, 1),
+      weekAgo2: getMetrics.weekAgo(timeseries, 2),
+      weekAgo3: getMetrics.weekAgo(timeseries, 3)
+    };
   }
 
   return {
