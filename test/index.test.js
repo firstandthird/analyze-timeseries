@@ -375,8 +375,39 @@ describe('analyzeTimeseries', function() {
         ];
 
         var out = aT({ values: data }, { aggregates: false });
-        expect(out.metrics.weekly).to.be.a('null');
-        expect(out.metrics.weekly).to.be.a('null');
+        expect(out.metrics.weekly).to.equal(null);
+        expect(out.metrics.weekly).to.equal(null);
+      });
+    });
+    describe('ranking', function() {
+      var data, out;
+
+      before(function() {
+        data = [
+          { value: 433, date: '2015-03-30' },
+          { value: 520, date: '2015-03-31' },
+          { value: 195, date: '2015-04-08' },
+          { value: 346, date: '2015-04-09' },
+          { value: 515, date: '2015-04-11' },
+          { value: 418, date: '2015-04-10' }
+        ];
+
+        out = aT({ values: data }, { ranking: true });
+      });
+
+      it('should reverse the values', function() {
+        expect(out.timeseries[0].value).to.equal(-433);
+      });
+
+      it('should fill empty dates with null', function() {
+        expect(out.timeseries[2].value).to.equal(null);
+      });
+
+      it('should not aggregate data', function() {
+        expect(out.metrics.overall.total).to.be.an('undefined');
+        expect(out.metrics.overall.average).to.be.an('undefined');
+        expect(out.metrics.weekly).to.equal(null);
+        expect(out.metrics.weekly).to.equal(null);
       });
     });
   });

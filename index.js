@@ -21,7 +21,7 @@ module.exports = function(data, options) {
     }
   };
 
-  if (options.aggregates !== false) {
+  if (options.aggregates !== false && !options.ranking) {
     metrics.overall.total = getMetrics.total(timeseries);
     metrics.overall.average = getMetrics.average(timeseries);
     metrics.weekly = {
