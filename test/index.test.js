@@ -124,7 +124,17 @@ describe('analyzeTimeseries', function() {
 
     });
 
-    it('should have latest day as today if latestToday: true');
+    it('should have latest day as today if latestToday: true', function() {
+      var data = [{
+        date: moment().subtract(30, 'day').toDate(),
+        value: 1
+      }];
+
+      var out = aT({ values: data }, { latestToday: true });
+
+      expect(out.timeseries.length).to.equal(31);
+      expect(out.timeseries[30].date).to.equal(parseInt(moment().startOf('day').format('x'), 10));
+    });
 
     describe('aggregates', function() {
       it('should not calculate average nor total if aggregates option is false', function() {
@@ -352,24 +362,6 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.overall.total;
         expect(metric.description).to.equal('Total');
         expect(metric.value).to.equal(5);
-        expect(metric.change).to.equal(null);
-      });
-    });
-    describe('average', function() {
-      it('should output the average for given data', function() {
-        var data = [
-          { date: new Date(), value: 0 },
-          { date: moment().subtract(1, 'day').toDate(), value: 1 },
-          { date: moment().subtract(2, 'day').toDate(), value: 2 },
-          { date: moment().subtract(3, 'day').toDate(), value: 3 },
-          { date: moment().subtract(4, 'day').toDate(), value: 4 }
-        ];
-
-        var out = aT({ values: data });
-
-        var metric = out.metrics.overall.average;
-        expect(metric.description).to.equal('Average');
-        expect(metric.value).to.equal(2);
         expect(metric.change).to.equal(null);
       });
     });
