@@ -126,6 +126,60 @@ describe('analyzeTimeseries', function() {
 
     it('should have latest day as today if latestToday: true');
 
+    describe('aggregates', function() {
+      it('should not calculate average nor total if aggregates option is false', function() {
+        var data = [
+          { date: new Date(), value: 90 },
+          { date: moment().subtract(1, 'day').toDate(), value: 80 }
+        ];
+
+        var out = aT({ values: data }, { aggregates: false });
+        expect(out.metrics.overall.total).to.be.an('undefined');
+        expect(out.metrics.overall.average).to.be.an('undefined');
+      });
+
+      it('should not calculate weekly data if aggregates option is false', function() {
+        var data = [
+          { date: new Date(), value: 90 },
+          { date: moment().subtract(1, 'day').toDate(), value: 80 }
+        ];
+
+        var out = aT({ values: data }, { aggregates: false });
+        expect(out.metrics.weekly).to.equal(null);
+        expect(out.metrics.weekly).to.equal(null);
+      });
+    });
+    describe('ranking', function() {
+      var data, out;
+
+      before(function() {
+        data = [
+          { value: 433, date: '2015-03-30' },
+          { value: 520, date: '2015-03-31' },
+          { value: 195, date: '2015-04-08' },
+          { value: 346, date: '2015-04-09' },
+          { value: 515, date: '2015-04-11' },
+          { value: 418, date: '2015-04-10' }
+        ];
+
+        out = aT({ values: data }, { ranking: true });
+      });
+
+      it('should reverse the values', function() {
+        expect(out.timeseries[0].value).to.equal(-433);
+      });
+
+      it('should fill empty dates with null', function() {
+        expect(out.timeseries[2].value).to.equal(null);
+      });
+
+      it('should not aggregate data', function() {
+        expect(out.metrics.overall.total).to.be.an('undefined');
+        expect(out.metrics.overall.average).to.be.an('undefined');
+        expect(out.metrics.weekly).to.equal(null);
+        expect(out.metrics.weekly).to.equal(null);
+      });
+    });
   });
 
   describe('metrics', function() {
@@ -354,60 +408,6 @@ describe('analyzeTimeseries', function() {
         expect(metric.description).to.equal('Min');
         expect(metric.value).to.equal(3);
         expect(metric.change).to.equal(null);
-      });
-    });
-    describe('aggregates', function() {
-      it('should not calculate average nor total if aggregates option is false', function() {
-        var data = [
-          { date: new Date(), value: 90 },
-          { date: moment().subtract(1, 'day').toDate(), value: 80 }
-        ];
-
-        var out = aT({ values: data }, { aggregates: false });
-        expect(out.metrics.overall.total).to.be.an('undefined');
-        expect(out.metrics.overall.average).to.be.an('undefined');
-      });
-
-      it('should not calculate weekly data if aggregates option is false', function() {
-        var data = [
-          { date: new Date(), value: 90 },
-          { date: moment().subtract(1, 'day').toDate(), value: 80 }
-        ];
-
-        var out = aT({ values: data }, { aggregates: false });
-        expect(out.metrics.weekly).to.equal(null);
-        expect(out.metrics.weekly).to.equal(null);
-      });
-    });
-    describe('ranking', function() {
-      var data, out;
-
-      before(function() {
-        data = [
-          { value: 433, date: '2015-03-30' },
-          { value: 520, date: '2015-03-31' },
-          { value: 195, date: '2015-04-08' },
-          { value: 346, date: '2015-04-09' },
-          { value: 515, date: '2015-04-11' },
-          { value: 418, date: '2015-04-10' }
-        ];
-
-        out = aT({ values: data }, { ranking: true });
-      });
-
-      it('should reverse the values', function() {
-        expect(out.timeseries[0].value).to.equal(-433);
-      });
-
-      it('should fill empty dates with null', function() {
-        expect(out.timeseries[2].value).to.equal(null);
-      });
-
-      it('should not aggregate data', function() {
-        expect(out.metrics.overall.total).to.be.an('undefined');
-        expect(out.metrics.overall.average).to.be.an('undefined');
-        expect(out.metrics.weekly).to.equal(null);
-        expect(out.metrics.weekly).to.equal(null);
       });
     });
   });
