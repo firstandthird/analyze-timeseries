@@ -23,6 +23,8 @@ module.exports = function(data, options) {
     daily: {
       today: getMetrics.today(timeseries),
       latest: getMetrics.latest(timeseries),
+      yesterday: getMetrics.yesterday(timeseries),
+      dayBefore: getMetrics.dayBefore(timeseries),
       daysAgo7: getMetrics.daysAgo(timeseries, 7),
       daysAgo14: getMetrics.daysAgo(timeseries, 14),
       daysAgo21: getMetrics.daysAgo(timeseries, 21)

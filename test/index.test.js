@@ -225,6 +225,34 @@ describe('analyzeTimeseries', function() {
         //expect(today.prettyValue).to.equal('1');
       });
 
+      it('should have yesterday', function() {
+        var data = [
+          { date: new Date(), value: 1 },
+          { date: moment().subtract(1, 'day').toDate(), value: 2 },
+          { date: moment().subtract(2, 'day').toDate(), value: 3 }
+        ];
+
+        var out = aT({ values: data });
+
+        var yesterday = out.metrics.daily.yesterday;
+        expect(yesterday.description).to.equal('Yesterday');
+        expect(yesterday.value).to.equal(2);
+      });
+
+      it('should have day before', function() {
+        var data = [
+          { date: new Date(), value: 1 },
+          { date: moment().subtract(1, 'day').toDate(), value: 2 },
+          { date: moment().subtract(2, 'day').toDate(), value: 3 }
+        ];
+
+        var out = aT({ values: data });
+
+        var dayBefore = out.metrics.daily.dayBefore;
+        expect(dayBefore.description).to.equal('Day Before');
+        expect(dayBefore.value).to.equal(3);
+      });
+
       it('should have latest', function() {
 
         var data = [{
@@ -401,6 +429,19 @@ describe('analyzeTimeseries', function() {
         expect(metric.value).to.equal(3);
         expect(metric.change).to.equal(null);
       });
+    });
+
+    describe.skip('test', function() {
+      /**var data = [ { value: 195, date: '2015-04-08' },
+        { value: 346, date: '2015-04-09' },
+        { value: 515, date: '2015-04-11' },
+        { value: 418, date: '2015-04-10' } ];
+
+      var out = aT({ values: data }, { latestToday: true, ranking: true });
+      out.timeseries.map(function(timeserie) {
+        console.log(moment(timeserie.date).toDate(), timeserie.value);
+      });
+      console.log(out.metrics.daily);**/
     });
   });
 
