@@ -88,7 +88,7 @@ describe('analyzeTimeseries', function() {
 
     expect(out.timeseries.length).to.equal(2);
     expect(out.timeseries[0].change).to.equal('-');
-    expect(out.timeseries[1].change).to.equal(1);
+    expect(out.timeseries[1].change).to.equal(-1);
   });
 
   describe('options', function() {
@@ -280,7 +280,7 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.daily.daysAgo7;
         expect(metric.description).to.equal('7 days ago');
         expect(metric.value).to.equal(50);
-        expect(metric.change).to.equal(-0.5);
+        expect(metric.change).to.equal(0.5);
       });
 
       it('should have daysAgo14', function() {
@@ -335,25 +335,25 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.weekly.thisWeek;
         expect(metric.description).to.equal('This Week');
         expect(metric.value).to.equal(2);
-        expect(metric.change).to.equal(1);
+        expect(metric.change).to.equal(-1);
       });
       it('should have 1 week ago', function() {
         var metric = out.metrics.weekly.weekAgo1;
         expect(metric.description).to.equal('1 week ago');
         expect(metric.value).to.equal(4);
-        expect(metric.change).to.equal(0.5);
+        expect(metric.change).to.equal(-0.5);
       });
       it('should have 2 weeks ago', function() {
         var metric = out.metrics.weekly.weekAgo2;
         expect(metric.description).to.equal('2 weeks ago');
         expect(metric.value).to.equal(6);
-        expect(metric.change).to.equal(3);
+        expect(metric.change).to.equal(-3);
       });
       it('should have 3 weeks ago', function() {
         var metric = out.metrics.weekly.weekAgo3;
         expect(metric.description).to.equal('3 weeks ago');
         expect(metric.value).to.equal(24);
-        expect(metric.change).to.equal(-0.5);
+        expect(metric.change).to.equal(0.5);
       });
     });
 
@@ -440,7 +440,7 @@ describe('analyzeTimeseries', function() {
 
         var today = out.metrics.daily.today;
         expect(today.prettyValue).to.equal('9,000');
-        expect(today.prettyChange).to.equal('200');
+        expect(today.prettyChange).to.equal('-200');
       });
       it('should be possible to alter the format with an option', function() {
         var data = [
@@ -452,7 +452,7 @@ describe('analyzeTimeseries', function() {
 
         var today = out.metrics.daily.today;
         expect(today.prettyValue).to.equal('9,000.13');
-        expect(today.prettyChange).to.equal('200');
+        expect(today.prettyChange).to.equal('-200');
       });
     });
   });
