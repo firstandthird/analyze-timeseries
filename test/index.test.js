@@ -207,7 +207,6 @@ describe('analyzeTimeseries', function() {
         var today = out.metrics.daily.today;
         expect(today.description).to.equal('Today');
         expect(today.value).to.equal(1);
-        //expect(today.prettyValue).to.equal('1');
       });
 
       it('should have - for today if no value', function() {
@@ -222,7 +221,6 @@ describe('analyzeTimeseries', function() {
         var today = out.metrics.daily.today;
         expect(today.description).to.equal('Today');
         expect(today.value).to.equal('-');
-        //expect(today.prettyValue).to.equal('1');
       });
 
       it('should have yesterday', function() {
@@ -431,17 +429,29 @@ describe('analyzeTimeseries', function() {
       });
     });
 
-    describe.skip('test', function() {
-      /**var data = [ { value: 195, date: '2015-04-08' },
-        { value: 346, date: '2015-04-09' },
-        { value: 515, date: '2015-04-11' },
-        { value: 418, date: '2015-04-10' } ];
+    describe('Format', function() {
+      it('should output values and change with a pretty value', function() {
+        var data = [
+          { date: new Date(), value: 9000.125 }
+        ];
 
-      var out = aT({ values: data }, { latestToday: true, ranking: true });
-      out.timeseries.map(function(timeserie) {
-        console.log(moment(timeserie.date).toDate(), timeserie.value);
+        var out = aT({ values: data });
+
+        var today = out.metrics.daily.today;
+        expect(today.prettyValue).to.equal('9,000');
+        expect(today.prettyChange).to.equal('200');
       });
-      console.log(out.metrics.daily);**/
+      it('should be possible to alter the format with an option', function() {
+        var data = [
+          { date: new Date(), value: 9000.125 }
+        ];
+
+        var out = aT({ values: data }, { format: '0,0.00' });
+
+        var today = out.metrics.daily.today;
+        expect(today.prettyValue).to.equal('9,000.13');
+        expect(today.prettyChange).to.equal('200');
+      });
     });
   });
 
