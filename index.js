@@ -16,7 +16,7 @@ module.exports = function(data, options) {
   }
 
   var timeseries = formatTimeseries(data, options, moment);
-  var getMetrics = new Metrics(moment);
+  var getMetrics = new Metrics(moment, options.format);
 
   //metrics
   var metrics = {
