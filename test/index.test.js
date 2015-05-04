@@ -432,7 +432,8 @@ describe('analyzeTimeseries', function() {
     describe('Format', function() {
       it('should output values and change with a pretty value', function() {
         var data = [
-          { date: new Date(), value: 9000.125 }
+          { date: new Date(), value: 9000.125 },
+          { date: moment().subtract(1, 'day').toDate(), value: 27000.50606 }
         ];
 
         var out = aT({ values: data });
@@ -443,7 +444,8 @@ describe('analyzeTimeseries', function() {
       });
       it('should be possible to alter the format with an option', function() {
         var data = [
-          { date: new Date(), value: 9000.125 }
+          { date: new Date(), value: 9000.125 },
+          { date: moment().subtract(1, 'day').toDate(), value: 27000.50606 }
         ];
 
         var out = aT({ values: data }, { format: '0,0.00' });
