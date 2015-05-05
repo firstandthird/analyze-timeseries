@@ -1,22 +1,11 @@
-var momentNoTz = require('moment');
-var momentTz = require('moment-timezone');
 var formatTimeseries = require('./lib/timeseries');
 var Metrics = require('./lib/metrics');
 
 module.exports = function(data, options) {
-  var moment;
   options = options || {};
 
-  if (options.timezone) {
-    moment = function() {
-      return momentTz.apply(this, arguments).tz(options.timezone);
-    };
-  } else {
-    moment = momentNoTz;
-  }
-
-  var timeseries = formatTimeseries(data, options, moment);
-  var getMetrics = new Metrics(moment, options.format);
+  var timeseries = formatTimeseries(data, options);
+  var getMetrics = new Metrics(options.format);
 
   //metrics
   var metrics = {
