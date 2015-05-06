@@ -9,7 +9,10 @@ module.exports = function(data, options) {
 
   if (options.timezone) {
     moment = function() {
-      return momentTz.apply(this, arguments).tz(options.timezone);
+      var args = Array.prototype.slice.call(arguments);
+      args.push(options.timezone);
+
+      return momentTz.tz.apply(this, args);
     };
   } else {
     moment = momentNoTz;
