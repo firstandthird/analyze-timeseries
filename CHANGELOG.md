@@ -1,4 +1,12 @@
 
+0.1.0 / 2015-05-23
+==================
+
+  * refactored metrics to have a utils and return entire object.  more functional, removed % change on timeseries data
+  * Ensuring timezones are used properly
+  * Revert "only use timezone if latestToday"
+
+
 0.0.2 / 2015-05-05
 ==================
 
