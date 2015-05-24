@@ -2,7 +2,7 @@
 var aT = require('../');
 var chai = require('chai');
 var expect = chai.expect;
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 describe('analyzeTimeseries', function() {
 
@@ -28,7 +28,7 @@ describe('analyzeTimeseries', function() {
     var out = aT({ values: data });
 
     expect(out.timeseries.length).to.equal(1);
-    expect(out.timeseries[0].date).to.equal(parseInt(moment().startOf('day').format('x'), 10));
+    expect(out.timeseries[0].date).to.equal(parseInt(moment.tz().startOf('day').format('x'), 10));
 
   });
 
@@ -43,7 +43,7 @@ describe('analyzeTimeseries', function() {
 
     expect(out.timeseries.length).to.equal(1);
     expect(out.timeseries[0].value).to.equal(3);
-    expect(out.timeseries[0].date).to.equal(parseInt(moment().startOf('day').format('x'), 10));
+    expect(out.timeseries[0].date).to.equal(parseInt(moment.tz().startOf('day').format('x'), 10));
 
   });
 
@@ -120,7 +120,7 @@ describe('analyzeTimeseries', function() {
       expect(out.timeseries.length).to.equal(5);
       expect(out.timeseries[0].value).to.equal(0);
       expect(out.timeseries[4].value).to.equal(1);
-      expect(out.timeseries[4].date).to.equal(parseInt(moment().startOf('day').subtract(1, 'day').format('x'), 10));
+      expect(out.timeseries[4].date).to.equal(parseInt(moment.tz().startOf('day').subtract(1, 'day').format('x'), 10));
 
     });
 
@@ -133,7 +133,7 @@ describe('analyzeTimeseries', function() {
       var out = aT({ values: data }, { latestToday: true });
 
       expect(out.timeseries.length).to.equal(31);
-      expect(out.timeseries[30].date).to.equal(parseInt(moment().startOf('day').format('x'), 10));
+      expect(out.timeseries[30].date).to.equal(parseInt(moment.tz().startOf('day').format('x'), 10));
     });
 
     describe.skip('aggregates', function() {
