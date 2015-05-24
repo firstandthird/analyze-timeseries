@@ -1,6 +1,6 @@
 {
   "name": "analyze-timeseries",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Perform math on timeseries data",
   "main": "index.js",
   "scripts": {

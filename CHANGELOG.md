@@ -1,4 +1,10 @@
 
+0.2.0 / 2015-05-24
+==================
+
+  * default to no timezone data, but allow passing it in
+
+
 0.1.0 / 2015-05-23
 ==================
 
