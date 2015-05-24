@@ -78,7 +78,7 @@ describe('analyzeTimeseries', function() {
 
   });
 
-  it('should add % change', function() {
+  it.skip('should add % change', function() {
     var data = [
       { date: new Date(), value: 100 },
       { date: moment().subtract(1, 'day').toDate(), value: 50 }
@@ -136,7 +136,7 @@ describe('analyzeTimeseries', function() {
       expect(out.timeseries[30].date).to.equal(parseInt(moment().startOf('day').format('x'), 10));
     });
 
-    describe('aggregates', function() {
+    describe.skip('aggregates', function() {
       it('should not calculate average nor total if aggregates option is false', function() {
         var data = [
           { date: new Date(), value: 90 },
@@ -144,8 +144,8 @@ describe('analyzeTimeseries', function() {
         ];
 
         var out = aT({ values: data }, { aggregates: false });
-        expect(out.metrics.overall.total).to.be.an('undefined');
-        expect(out.metrics.overall.average).to.be.an('undefined');
+        expect(out.metrics.aggregates.total).to.be.an('undefined');
+        expect(out.metrics.aggregates.average).to.be.an('undefined');
       });
 
       it('should not calculate weekly data if aggregates option is false', function() {
@@ -155,8 +155,8 @@ describe('analyzeTimeseries', function() {
         ];
 
         var out = aT({ values: data }, { aggregates: false });
-        expect(out.metrics.weekly).to.equal(null);
-        expect(out.metrics.weekly).to.equal(null);
+        expect(out.metrics.aggregates).to.equal(undefined);
+        expect(out.metrics.aggregates).to.equal(null);
       });
     });
     describe('ranking', function() {
@@ -183,11 +183,11 @@ describe('analyzeTimeseries', function() {
         expect(out.timeseries[2].value).to.equal(null);
       });
 
-      it('should not aggregate data', function() {
-        expect(out.metrics.overall.total).to.be.an('undefined');
-        expect(out.metrics.overall.average).to.be.an('undefined');
-        expect(out.metrics.weekly).to.equal(null);
-        expect(out.metrics.weekly).to.equal(null);
+      it.skip('should not aggregate data', function() {
+        expect(out.metrics.aggregates.last30days).to.be.an('undefined');
+        expect(out.metrics.aggregates.average).to.be.an('undefined');
+        expect(out.metrics.aggregates).to.equal(null);
+        expect(out.metrics.aggregates).to.equal(null);
       });
     });
   });
@@ -247,8 +247,8 @@ describe('analyzeTimeseries', function() {
         var out = aT({ values: data });
 
         var dayBefore = out.metrics.daily.dayBefore;
-        expect(dayBefore.description).to.equal('Day Before');
-        expect(dayBefore.value).to.equal(3);
+        expect(dayBefore.description).to.equal('Yesterday');
+        expect(dayBefore.value).to.equal(2);
       });
 
       it('should have latest', function() {
@@ -261,7 +261,7 @@ describe('analyzeTimeseries', function() {
         var out = aT({ values: data });
 
         var metric = out.metrics.daily.latest;
-        expect(metric.description).to.equal('Latest');
+        expect(metric.description).to.equal('Yesterday');
         expect(metric.value).to.equal(1);
         expect(metric.change).to.equal('-');
         //expect(today.prettyValue).to.equal('1');
@@ -280,7 +280,6 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.daily.daysAgo7;
         expect(metric.description).to.equal('7 days ago');
         expect(metric.value).to.equal(50);
-        expect(metric.change).to.equal(0.5);
       });
 
       it('should have daysAgo14', function() {
@@ -296,7 +295,6 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.daily.daysAgo14;
         expect(metric.description).to.equal('14 days ago');
         expect(metric.value).to.equal(100);
-        expect(metric.change).to.equal(0);
       });
 
       it('should have daysAgo21', function() {
@@ -312,7 +310,6 @@ describe('analyzeTimeseries', function() {
         var metric = out.metrics.daily.daysAgo21;
         expect(metric.description).to.equal('21 days ago');
         expect(metric.value).to.equal(100);
-        expect(metric.change).to.equal(0);
       });
     });
 
@@ -332,33 +329,33 @@ describe('analyzeTimeseries', function() {
       });
 
       it('should have thisWeek', function() {
-        var metric = out.metrics.weekly.thisWeek;
-        expect(metric.description).to.equal('This Week');
+        var metric = out.metrics.aggregates.week;
+        expect(metric.description).to.equal('This week');
         expect(metric.value).to.equal(2);
         expect(metric.change).to.equal(-1);
       });
       it('should have 1 week ago', function() {
-        var metric = out.metrics.weekly.weekAgo1;
+        var metric = out.metrics.aggregates.weekAgo1;
         expect(metric.description).to.equal('1 week ago');
         expect(metric.value).to.equal(4);
         expect(metric.change).to.equal(-0.5);
       });
       it('should have 2 weeks ago', function() {
-        var metric = out.metrics.weekly.weekAgo2;
+        var metric = out.metrics.aggregates.weekAgo2;
         expect(metric.description).to.equal('2 weeks ago');
         expect(metric.value).to.equal(6);
         expect(metric.change).to.equal(-3);
       });
       it('should have 3 weeks ago', function() {
-        var metric = out.metrics.weekly.weekAgo3;
+        var metric = out.metrics.aggregates.weekAgo3;
         expect(metric.description).to.equal('3 weeks ago');
         expect(metric.value).to.equal(24);
         expect(metric.change).to.equal(0.5);
       });
     });
 
-    describe('total', function() {
-      it('should output the total for a given data', function() {
+    describe('last30days', function() {
+      it('should output the last 30 days for a given data', function() {
         var data = [
           { date: new Date(), value: 0 },
           { date: moment().subtract(1, 'day').toDate(), value: 1 },
@@ -369,10 +366,9 @@ describe('analyzeTimeseries', function() {
 
         var out = aT({ values: data });
 
-        var metric = out.metrics.overall.total;
-        expect(metric.description).to.equal('Total');
+        var metric = out.metrics.aggregates.last30days;
+        expect(metric.description).to.equal('Last 30 days');
         expect(metric.value).to.equal(10);
-        expect(metric.change).to.equal(null);
       });
       it('should ignore non numeric values', function() {
         var data = [
@@ -385,10 +381,9 @@ describe('analyzeTimeseries', function() {
 
         var out = aT({ values: data });
 
-        var metric = out.metrics.overall.total;
-        expect(metric.description).to.equal('Total');
+        var metric = out.metrics.aggregates.last30days;
+        expect(metric.description).to.equal('Last 30 days');
         expect(metric.value).to.equal(5);
-        expect(metric.change).to.equal(null);
       });
     });
     describe('max', function() {
@@ -403,10 +398,9 @@ describe('analyzeTimeseries', function() {
 
         var out = aT({ values: data });
 
-        var metric = out.metrics.overall.maximum;
-        expect(metric.description).to.equal('Max');
+        var metric = out.metrics.aggregates.maximum;
+        expect(metric.description).to.equal('Maximum');
         expect(metric.value).to.equal(73);
-        expect(metric.change).to.equal(null);
       });
     });
     describe('average', function() {
@@ -421,11 +415,10 @@ describe('analyzeTimeseries', function() {
 
         var out = aT({ values: data });
 
-        var metric = out.metrics.overall.minimum;
+        var metric = out.metrics.aggregates.minimum;
 
-        expect(metric.description).to.equal('Min');
+        expect(metric.description).to.equal('Minimum');
         expect(metric.value).to.equal(3);
-        expect(metric.change).to.equal(null);
       });
     });
 
