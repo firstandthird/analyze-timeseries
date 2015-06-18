@@ -1,4 +1,10 @@
 
+0.3.0 / 2015-06-18
+==================
+
+  * if aggregates==false, still return average, max, min.  fixed average   mispelling
+
+
 0.2.1 / 2015-05-26
 ==================
 
