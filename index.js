@@ -12,6 +12,11 @@ module.exports = function(data, options) {
     return momentTz.tz.apply(this, args);
   };
 
+  if (options.type &&
+    (options.type === 'totals' || options.type === 'percentage')) {
+    options.aggregates = false;
+  }
+
   var timeseries = formatTimeseries(data, options, moment);
 
   return {

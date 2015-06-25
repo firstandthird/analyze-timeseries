@@ -190,6 +190,21 @@ describe('analyzeTimeseries', function() {
         expect(out.metrics.aggregates).to.equal(null);
       });
     });
+    describe('Total', function() {
+      it('should not group by days', function() {
+
+        var data = [
+          { date: moment().toDate(), value: 1 },
+          { date: moment().add(1, 'second').toDate(), value: 2 }
+        ];
+
+        var out = aT({ values: data }, { type: 'totals' });
+
+        expect(out.timeseries.length).to.equal(1);
+        expect(out.timeseries[0].value).to.equal(2);
+        expect(out.timeseries[0].date).to.equal(parseInt(moment.tz().startOf('day').format('x'), 10));
+      });
+    });
   });
 
   describe('metrics', function() {
