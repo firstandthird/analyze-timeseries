@@ -32,6 +32,22 @@ describe('analyzeTimeseries', function() {
 
   });
 
+  it('should add dayOfWeek and prettyDate', function() {
+
+    var day = new Date();
+    var data = [
+      { date: day, value: 1 }
+    ];
+
+    var out = aT({ values: data });
+
+    var dow = moment(day).format('ddd');
+    expect(out.timeseries[0].dayOfWeek).to.equal(dow);
+    var prettyDate = moment(day).format('YYYY-MM-DD');
+    expect(out.timeseries[0].prettyDate).to.equal(prettyDate);
+
+  });
+
   it('should group by days', function() {
 
     var data = [
