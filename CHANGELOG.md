@@ -1,4 +1,9 @@
 
+0.5.0 / 2015-10-14
+==================
+
+  * added dayOfWeek and prettyDate to timeseries
+
 0.4.0 / 2015-08-08
 ==================
 
